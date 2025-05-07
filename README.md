@@ -2,7 +2,6 @@
 A norm is a function that measures the size or length of a vector. It gives a sense of how "long" or "large" the vector is in space.
 
 ---
-
 1. Calculating the p-Norm
 A general way to measure vector length by raising each element to a power "p", summing them up, and taking the p-th root. Different values of "p" give you different styles of measuring distance.
 
@@ -52,50 +51,36 @@ Used in finite element methods and physics-based simulations. It measures the ph
 
 # python code
 ```
-
 import numpy as np
-
 
 def calculate_norm(vector_or_matrix, norm_type='L2'):
     data = np.array(vector_or_matrix)
-
     if norm_type == 'L0':
         return np.count_nonzero(data)
-
     elif norm_type == 'L1':
         return np.sum(np.abs(data))
-
     elif norm_type == 'L2':
         return np.linalg.norm(data)
-
     elif norm_type == 'Linf':
         return np.max(np.abs(data))
-
     elif norm_type == 'Frobenius':
         return np.linalg.norm(data, 'fro')
-
     elif norm_type == 'Nuclear':
         if data.ndim == 1:
             raise ValueError("Nuclear norm is defined for matrices, not vectors.")
         return np.sum(np.linalg.svd(data, compute_uv=False))
-
     elif norm_type == 'Spectral':
         if data.ndim == 1:
             raise ValueError("Spectral norm is defined for matrices, not vectors.")
         return np.linalg.svd(data, compute_uv=False)[0]
-
     elif norm_type == 'Induced_L2':
         return induced_norm(data, p=2)
-
     elif norm_type == 'Induced_L1':
         return induced_norm(data, p=1)
-
     elif norm_type == 'Induced_Linf':
         return induced_norm(data, p=np.inf)
-
     else:
         raise ValueError(f"Unsupported norm type: {norm_type}")
-
 
 def induced_norm(matrix, p=2):
     if p == 2:
@@ -107,11 +92,9 @@ def induced_norm(matrix, p=2):
     else:
         raise ValueError(f"Unsupported p value for induced norm: {p}")
 
-
 def get_matrix_from_user():
     rows = int(input("Enter the number of rows for the matrix: "))
     cols = int(input("Enter the number of columns for the matrix: "))
-
     matrix = []
     print(f"Enter the matrix values row by row:")
     for i in range(rows):
@@ -120,14 +103,11 @@ def get_matrix_from_user():
             print(f"Row {i + 1} should have {cols} elements. Please try again.")
             return get_matrix_from_user()
         matrix.append(row)
-
     return matrix
-
 
 def detect_and_calculate():
     while True:
         matrix = get_matrix_from_user()
-
         print("Choose a norm type:")
         print(
             "Available options: 'L0', 'L1', 'L2', 'Linf', 'Frobenius', 'Nuclear', 'Spectral', 'Induced_L2', 'Induced_L1', 'Induced_Linf'")
@@ -138,14 +118,23 @@ def detect_and_calculate():
             print(f"The {norm_type} norm of the input is: {result}")
         except ValueError as e:
             print(e)
-
         repeat = input("Do you want to calculate another norm for a different matrix? (yes/no): ").strip().lower()
         if repeat != 'yes':
             print("Exiting program...")
             break
-
-
 detect_and_calculate()
-
-
 ```
+
+# example
+```
+Enter the number of rows for the matrix: 2
+Enter the number of columns for the matrix: 1
+Enter the matrix values row by row:
+Row 1: 3
+Row 2: 4
+Choose a norm type:
+Available options: 'L0', 'L1', 'L2', 'Linf', 'Frobenius', 'Nuclear', 'Spectral', 'Induced_L2', 'Induced_L1', 'Induced_Linf'
+Enter norm type: L2
+The L2 norm of the input is: 5.0
+Do you want to calculate another norm for a different matrix? (yes/no): yse
+Exiting program...
